@@ -29,8 +29,7 @@ def exchange_type_datetime(df: pd.DataFrame, columns_names: list[str])->pd.DataF
     logging.info(f"Convertendo o tipo de dado da(s) coluna(s) {columns_names} para datetime...")
 
     for name in columns_names:
-        #df[name] = pd.to_datetime(df[name], format = "%m/%d/%y")
-        df[name] = pd.to_datetime(df[name], infer_datetime_format=True)
+        df[name] = pd.to_datetime(df[name], format = "%Y-%m-%d", errors="coerce")
 
     logging.info("Colunas convertidas para datetime...")
 
