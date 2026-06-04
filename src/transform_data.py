@@ -78,7 +78,7 @@ def fill_nan_mean(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
     for name in columns_names:
         mean = df[name].mean()
-        df[name] = df[name].fillna(mean)
+        df[name] = df[name].fillna(int(mean))
 
     logging.info(f"Valores nan da(s) coluna(s) {columns_names} preenchidas...")
 
@@ -96,9 +96,6 @@ def transform_data_hospital():
     df = fill_nan_columns(df, columns_names_fill_nan)
     df = fill_nan_mean(df, columns_names_fill_nan_mean)
 
-    logging(f"Transformações concluídas com sucesso!")
+    logging.info("Transformações concluídas com sucesso!")
 
     return df
-
-
-print(transform_data_hospital())
