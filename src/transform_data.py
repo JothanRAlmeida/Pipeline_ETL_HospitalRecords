@@ -61,14 +61,14 @@ def standard_categories(df: pd.DataFrame, columns_names: list[str])->pd.DataFram
 
     return df
 
-def fill_nan_columns(df: pd.DataFrame, columns_names: dir)->pd.DataFrame:
+def fill_nan_columns(df: pd.DataFrame, columns_names: dict)->pd.DataFrame:
 
     logging.info(f"Preenchendo nans das colunas {columns_names.keys()}...")
 
     # Utiliza o dicionário com coluna:valor para preencher os valores ausentes
     df = df.fillna(columns_names, inplace=True)
 
-    logging.info(f"Valores nans das {columns_names.keys()} preenchidos...")
+    logging.info(f"Valores nans das {list(columns_names.keys())} preenchidos...")
 
     return df
 
