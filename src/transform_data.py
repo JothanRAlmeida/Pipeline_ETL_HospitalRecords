@@ -13,7 +13,7 @@ columns_names_fill_nan = {'Gender': 'Unknown','Diagnosis':'No Diagnosis'}
 columns_names_fill_nan_mean = ['Age']
 
 def create_dataframe(path_name: Path):
-    logging.info("Criando copia dos dados para transformação...")
+    logging.info("Criando Data Frame...")
 
     if not path_name.exists():
         raise FileNotFoundError(f"Arquivo não encontrado: {path_name}\n")
@@ -63,24 +63,24 @@ def standard_categories(df: pd.DataFrame, columns_names: list[str])->pd.DataFram
 
 def fill_nan_columns(df: pd.DataFrame, columns_names: dict)->pd.DataFrame:
 
-    logging.info(f"Preenchendo nans das colunas {columns_names.keys()}...")
+    logging.info(f"Preenchendo nan das colunas {columns_names.keys()}...")
 
     # Utiliza o dicionário com coluna:valor para preencher os valores ausentes
     df = df.fillna(columns_names)
 
-    logging.info(f"Valores nans das {list(columns_names.keys())} preenchidos...")
+    logging.info(f"Valores nan das {list(columns_names.keys())} preenchidos...")
 
     return df
 
 def fill_nan_mean(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
-    logging.info(f"Preenchendo valores nans da(s) coluna(s) {columns_names} com a média...")
+    logging.info(f"Preenchendo valores nan da(s) coluna(s) {columns_names} com a média...")
 
     for name in columns_names:
         mean = df[name].mean()
         df[name] = df[name].fillna(mean)
 
-    logging.info(f"Valores nans da(s) coluna(s) {columns_names} preenchidas...")
+    logging.info(f"Valores nan da(s) coluna(s) {columns_names} preenchidas...")
 
     return df
 
@@ -99,3 +99,6 @@ def transform_data_hospital():
     logging(f"Transformações concluídas com sucesso!")
 
     return df
+
+
+print(transform_data_hospital())
