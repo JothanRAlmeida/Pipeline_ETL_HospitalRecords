@@ -4,7 +4,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-path_file_raw = Path(__file__).parent.parent/'data'/'hospital_patients_real_world.csv'
+path_file = Path(__file__).parent.parent/'data'/'hospital_patients_real_world.csv'
 
 columns_names_to_datetime = ['AdmissionDate', 'DischargeDate']
 columns_names_to_int = ['Age']
@@ -81,5 +81,21 @@ def fill_nan_mean(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
         df[name] = df[name].fillna(mean)
 
     logging.info(f"Valores nans da(s) coluna(s) {columns_names} preenchidas...")
+
+    return df
+
+def transform_data_hospital():
+
+
+    print("Iniciando transformações...\n")
+
+    df = create_dataframe(path_file)
+    df = exchange_type_datetime(df, columns_names_to_datetime)
+    df = exchange_type_int(df, columns_names_to_int)
+    df = standard_categories(df, columns_names_to_standard)
+    df = fill_nan_columns(df, columns_names_fill_nan)
+    df = fill_nan_mean(df, columns_names_fill_nan_mean)
+
+    logging(f"Transformações concluídas com sucesso!")
 
     return df
