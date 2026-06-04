@@ -8,6 +8,7 @@ path_file_raw = Path(__file__).parent.parent/'data'/'hospital_patients_real_worl
 
 columns_names_to_datetime = ['AdmissionDate', 'DischargeDate']
 columns_names_to_int = ['Age']
+columns_names_to_standard = ['Diagnosis']
 
 def create_dataframe(path_name: str):
     logging.info("Criando copia dos dados para transformação...")
@@ -25,11 +26,9 @@ def exchange_type_datetime(df: pd.DataFrame, columns_names: list[str])->pd.DataF
 
     logging.info(f"Convertendo o tipo de dado da(s) coluna(s) {columns_names} para datetime...")
 
-    # Converte campos
     for name in columns_names:
-        df[name] = pd.to_datetime(df[name], format = "%m/%d/%y")
-        #Se der erro no de cima, usar o de baixo
-        #dados['nova_data'] = pd.to_datetime(dados['data'], infer_datetime_format=True)
+        #df[name] = pd.to_datetime(df[name], format = "%m/%d/%y")
+        df[name] = pd.to_datetime(df[name], infer_datetime_format=True)
 
     logging.info("Colunas convertidas para datetime...")
 
@@ -39,7 +38,6 @@ def exchange_type_int(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
     logging.info(f"Convertendo tipo de dado da(s) coluna(s) {columns_names} para int...")
 
-    # Converte campos
     for name in columns_names:
         df[name] = df[name].astype(int)
 
@@ -47,6 +45,19 @@ def exchange_type_int(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
     return df
     
+def standard_categories(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
+
+    logging.info(f"Padronizando categorias da(s) coluna(s) {columns_names}...")
+
+    for name in columns_names:
+        df[name] = df[name].strip().lower() # Remove espaços no inicio e fim e tudo em letra minúscula
+        df[name] = df[name].capitalize() # Primeira letra maiúscula
+
+    logging.info(f"Categorias da(s) coluna(s) {columns_names} padronizada(s)...")
+
+    return df
+        
+        
 
 
 
