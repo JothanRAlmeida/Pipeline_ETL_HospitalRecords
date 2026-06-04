@@ -9,6 +9,7 @@ path_file_raw = Path(__file__).parent.parent/'data'/'hospital_patients_real_worl
 columns_names_to_datetime = ['AdmissionDate', 'DischargeDate']
 columns_names_to_int = ['Age']
 columns_names_to_standard = ['Diagnosis']
+columns_names_fill_nan = {'Gender': 'Unknown','Diagnosis':'No Diagnosis'}
 
 def create_dataframe(path_name: str):
     logging.info("Criando copia dos dados para transformação...")
@@ -56,15 +57,22 @@ def standard_categories(df: pd.DataFrame, columns_names: list[str])->pd.DataFram
     logging.info(f"Categorias da(s) coluna(s) {columns_names} padronizada(s)...")
 
     return df
-        
-        
+
+def fill_nan_columns(df: pd.DataFrame, columns_names: dir)->pd.DataFrame:
+
+    logging.info(f"Preenchendo nans das colunas {columns_names.keys()}...")
+
+    # Utiliza o dicionário com coluna:valor para preencher os valores ausentes
+    df = df.fillna(columns_names, inplace=True)
+
+    logging.info(f"Valores nans das {columns_names.keys()} preenchidos...")
+
+    return df
 
 
 
 
-# Trocar o tipo do campo Age de float para int
-# Trocar o tipo dos campos AdmissionDate e DischargeDate de str para datetime
-# Colocar a coluna Diagnosis em caixa baixa para não haver diferença entre categorias iguais
+
 # Incluir os campos nan da coluna Gender na categoria Unknown
 # Criar categoria "Sem diagnóstico" para nan da coluna Diagnosis
 # Imputar média das idades na coluna Age pois não há outliers
