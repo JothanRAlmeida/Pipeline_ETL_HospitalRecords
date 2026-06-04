@@ -40,7 +40,7 @@ def exchange_type_int(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
     logging.info(f"Convertendo tipo de dado da(s) coluna(s) {columns_names} para int...")
 
     for name in columns_names:
-        df[name] = df[name].astype(int)
+        df[name] = pd.to_numeric(df[name], errors="coerce").astype("Int64")
 
     logging.info("Coluna(s) convertida(s) para int...")
 
