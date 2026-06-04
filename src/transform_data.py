@@ -23,7 +23,7 @@ def create_dataframe(path_name: str):
 
 def exchange_type_datetime(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
-    logging.info(f"Convertendo tipos de dados das colunas {columns_names} para datetime...")
+    logging.info(f"Convertendo o tipo de dado da(s) coluna(s) {columns_names} para datetime...")
 
     # Converte campos
     for name in columns_names:
@@ -35,8 +35,17 @@ def exchange_type_datetime(df: pd.DataFrame, columns_names: list[str])->pd.DataF
 
     return df
 
+def exchange_type_int(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
+    logging.info(f"Convertendo tipo de dado da(s) coluna(s) {columns_names} para int...")
 
+    # Converte campos
+    for name in columns_names:
+        df[name] = df[name].astype(int)
+
+    logging.info("Coluna(s) convertida(s) para int...")
+
+    return df
     
 
 
