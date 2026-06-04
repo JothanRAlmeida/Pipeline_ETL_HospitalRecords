@@ -8,5 +8,6 @@ dependencies = [
     "kaggle>=2.2.1",
     "kagglehub>=1.0.1",
     "pandas>=3.0.3",
+    "seaborn>=0.13.2",
     "sqlalchemy>=2.0.50",
 ]
