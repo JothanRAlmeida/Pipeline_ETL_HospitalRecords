@@ -51,8 +51,11 @@ def standard_categories(df: pd.DataFrame, columns_names: list[str])->pd.DataFram
     logging.info(f"Padronizando categorias da(s) coluna(s) {columns_names}...")
 
     for name in columns_names:
-        df[name] = df[name].strip().lower() # Remove espaços no inicio e fim e tudo em letra minúscula
-        df[name] = df[name].capitalize() # Primeira letra maiúscula
+        df[name] = (df[name]
+                    .str.strip() # Remove espaços me branco no inicio e no fim
+                    .str.lower() # Todas as letras em minúsculo
+                    .str.capitalize() # Primeira letra em maiúsculo
+                    )
 
     logging.info(f"Categorias da(s) coluna(s) {columns_names} padronizada(s)...")
 
