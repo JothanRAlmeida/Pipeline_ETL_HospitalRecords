@@ -66,7 +66,7 @@ def fill_nan_columns(df: pd.DataFrame, columns_names: dict)->pd.DataFrame:
     logging.info(f"Preenchendo nans das colunas {columns_names.keys()}...")
 
     # Utiliza o dicionário com coluna:valor para preencher os valores ausentes
-    df = df.fillna(columns_names, inplace=True)
+    df = df.fillna(columns_names)
 
     logging.info(f"Valores nans das {list(columns_names.keys())} preenchidos...")
 
@@ -78,7 +78,7 @@ def fill_nan_mean(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
     for name in columns_names:
         mean = df[name].mean()
-        df[name] = df[name].fillna(mean, inplace=True)
+        df[name] = df[name].fillna(mean)
 
     logging.info(f"Valores nans da(s) coluna(s) {columns_names} preenchidas...")
 
