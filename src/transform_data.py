@@ -10,6 +10,7 @@ columns_names_to_datetime = ['AdmissionDate', 'DischargeDate']
 columns_names_to_int = ['Age']
 columns_names_to_standard = ['Diagnosis']
 columns_names_fill_nan = {'Gender': 'Unknown','Diagnosis':'No Diagnosis'}
+columns_names_fill_nan_mean = ['Age']
 
 def create_dataframe(path_name: str):
     logging.info("Criando copia dos dados para transformação...")
@@ -69,10 +70,14 @@ def fill_nan_columns(df: pd.DataFrame, columns_names: dir)->pd.DataFrame:
 
     return df
 
+def fill_nan_mean(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
+    logging.info(f"Preenchendo valores nans da(s) coluna(s) {columns_names} com a média...")
 
+    for name in columns_names:
+        mean = df[name].mean()
+        df[name] = df[name].fillna(mean, inplace=True)
 
+    logging.info(f"Valores nans da(s) coluna(s) {columns_names} preenchidas...")
 
-# Incluir os campos nan da coluna Gender na categoria Unknown
-# Criar categoria "Sem diagnóstico" para nan da coluna Diagnosis
-# Imputar média das idades na coluna Age pois não há outliers
+    return df
