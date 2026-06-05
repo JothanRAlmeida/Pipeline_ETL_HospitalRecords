@@ -4,7 +4,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-path_file = Path(__file__).parent.parent/'data'/'hospital_patients_real_world.csv'
+path_file = Path(__file__).parent.parent/'data'/'raw'/'hospital_patients_real_world.csv'
 
 columns_names_to_datetime = ['AdmissionDate', 'DischargeDate']
 columns_names_to_int = ['Age']
