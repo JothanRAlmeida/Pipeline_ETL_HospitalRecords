@@ -9,7 +9,7 @@ path_file = Path(__file__).parent.parent/'data'/'hospital_patients_real_world.cs
 columns_names_to_datetime = ['AdmissionDate', 'DischargeDate']
 columns_names_to_int = ['Age']
 columns_names_to_standard = ['Diagnosis']
-columns_names_fill_nan = {'Gender': 'Unknown','Diagnosis':'No Diagnosis'}
+columns_names_fill_nan = {'Gender': 'Unknown','Diagnosis':'Unknown Diagnosis'}
 columns_names_fill_nan_mean = ['Age']
 
 def create_dataframe(path_name: Path):
