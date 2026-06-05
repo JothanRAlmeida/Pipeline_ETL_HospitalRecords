@@ -1,0 +1,12 @@
+ - Conecção com API da Kaggle
+ - Extração dos dados dos paciênctes do hospial em CSV
+ - Análise exploratória para identificação de inconsistência:
+    - Colunas Age, Gender e Diagnosis com valores nan
+    - Os valores nan correpondem a 3% do total de dados
+    - Identificação de categorias da coluna Diagnosis iguais mas com letras em caixa alta
+    - Coluna Age como float ao invés de inte
+    - Datas de saída antes da data de entrada no hospital (3%)
+- Criação do DataFrame
+- Tratamento das colunas de datas para DateTime
+- Conversão da coluna Age para int
+- Preenchimento de valores nan - Gender = Unknown (categoria que já existia) - Diagnosis = Unknown Diagnosis (poucos dados ausentes) - Age = mediana (não possuia valores outliers significantes mas a média e a mediana eram bem próximos)
