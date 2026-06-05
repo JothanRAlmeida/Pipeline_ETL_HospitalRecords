@@ -94,7 +94,7 @@ def transform_data_hospital():
     df = exchange_type_int(df, columns_names_to_int)
     df = standard_categories(df, columns_names_to_standard)
     df = fill_nan_columns(df, columns_names_fill_nan)
-    df = fill_nan_mean(df, columns_names_fill_nan_mean)
+    df = fill_nan_median(df, columns_names_fill_nan_mean)
 
     logging.info("Transformações concluídas com sucesso!")
 
