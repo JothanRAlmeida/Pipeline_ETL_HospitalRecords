@@ -10,3 +10,4 @@
 - Tratamento das colunas de datas para DateTime
 - Conversão da coluna Age para int
 - Preenchimento de valores nan - Gender = Unknown (categoria que já existia) - Diagnosis = Unknown Diagnosis (poucos dados ausentes) - Age = mediana (não possuia valores outliers significantes mas a média e a mediana eram bem próximos)
+- Criação de nova coluna para indicar se estadia é válida ou não (DischargeDate >= AdmissionDate) para possível tratamento em futura análise
