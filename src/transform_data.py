@@ -72,13 +72,13 @@ def fill_nan_columns(df: pd.DataFrame, columns_names: dict)->pd.DataFrame:
 
     return df
 
-def fill_nan_mean(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
+def fill_nan_median(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
     logging.info(f"Preenchendo valores nan da(s) coluna(s) {columns_names} com a média...")
 
     for name in columns_names:
-        mean = df[name].mean()
-        df[name] = df[name].fillna(int(mean))
+        median = df[name].median()
+        df[name] = df[name].fillna(median)
 
     logging.info(f"Valores nan da(s) coluna(s) {columns_names} preenchidas...")
 
