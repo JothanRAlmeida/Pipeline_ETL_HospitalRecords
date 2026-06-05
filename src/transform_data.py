@@ -105,6 +105,7 @@ def transform_data_hospital():
     df = standard_categories(df, columns_names_to_standard)
     df = fill_nan_columns(df, columns_names_fill_nan)
     df = fill_nan_median(df, columns_names_fill_nan_mean)
+    df = define_valid_stay(df)
 
     logging.info("Transformações concluídas com sucesso!")
 
