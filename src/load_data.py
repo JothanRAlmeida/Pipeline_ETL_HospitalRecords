@@ -4,7 +4,7 @@ from pathlib import Path
 from sqlalchemy import create_engine
 import logging
 from dotenv import load_dotenv # Para carregar as variáveis de ambiente do arquivo .env
-from urllib import quote_plus # Codifica strings para que possam ser enviadas com seguranã em uma URL
+from urllib.parse import quote_plus # Codifica strings para que possam ser enviadas com seguranã em uma URL
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
