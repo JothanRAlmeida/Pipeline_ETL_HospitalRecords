@@ -1,0 +1,15 @@
+from extract_data import extract_hospital_data
+from transform_data import transform_data_hospital
+from load_data import load_hospital_data
+from pathlib import Path
+import pandas as pd
+
+table_name = 'hospital_records'
+
+extract_hospital_data()
+
+df = transform_data_hospital()
+
+load_hospital_data(table_name, df)
+
+print("Pipeline executado com sucesso!\n\n")
