@@ -5,11 +5,11 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def extract_hospital_data(path_name: str, name_file: str):
+def extract_hospital_data():
 
     logging.info("Extraindo os dados do dataset...")
 
-    output_dir = Path(path_name)
+    output_dir = Path('data/raw')
     output_dir.mkdir(parents=True, exist_ok=True)
 
     api = KaggleApi()
@@ -21,10 +21,4 @@ def extract_hospital_data(path_name: str, name_file: str):
         unzip=True
     )
 
-    csv_file = next(output_dir.glob("*.csv"))
-
-    novo_nome = output_dir / name_file
-
-    csv_file.rename(novo_nome)
-
-    logging.info(f"Dados baixados em {output_dir}/{name_file}...")
+    logging.info(f"Dados baixados em {output_dir}...")
