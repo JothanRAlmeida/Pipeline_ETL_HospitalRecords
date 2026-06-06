@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 env_path = Path(__file__).resolve().parent.parent / 'config' / '.env'
 load_dotenv(env_path)
 
-data_base = os.getenv('database')
+data_base = os.getenv('data_base')
 user = os.getenv('user')
 password = os.getenv('password')
 host = 'localhost'
