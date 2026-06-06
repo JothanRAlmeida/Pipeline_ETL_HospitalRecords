@@ -24,7 +24,7 @@ def get_engine():
     logging.info(f"Conectando em {host}:5432/{data_base}")
 
     # Define onde está o banco e conecta ao mesmo
-    return create_engine(f"postegresql+psycopg2://{user}:{quote_plus(password)@{host}:5432/{data_base}}")
+    return create_engine(f"postegresql+psycopg2://{user}:{quote_plus(password)}@{host}:5432/{data_base}")
 
 # Chama a conexão com o banco
 engine = get_engine()
