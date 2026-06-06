@@ -9,7 +9,7 @@ def extract_hospital_data():
 
     logging.info("Extraindo os dados do dataset...")
 
-    output_dir = Path('data')
+    output_dir = Path('data/raw')
     output_dir.mkdir(parents=True, exist_ok=True)
 
     api = KaggleApi()
