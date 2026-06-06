@@ -18,3 +18,32 @@ user = os.getenv('user')
 password = os.getenv('password')
 host = 'localhost'
 
+# Conexão com o banco de dados PostgreSQL
+def get_engine():
+
+    logging.info(f"Conectando em {host}:5432/{data_base}")
+
+    # Define onde está o banco e conecta ao mesmo
+    return create_engine(f"postegresql+psycopg2://{user}:{quote_plus(password)@{host}:5432/{data_base}}")
+
+# Chama a conexão com o banco
+engine = get_engine()
+
+# Carrega os dados tratados no banco de dados no PostgreSQL
+def load_hospital_data(table_name: str, df: pd.DataFrame):
+
+    logging.info(f"Carregando dados à tabela {table_name}")
+
+    # Para salvar o DataFrame do pandas diretamente no banco de dados
+    df.to_sql(
+        name = table_name, # Define o nome da tabela
+        con = engine, # Conecta ao banco
+        if_exists='replace', # Se a tabela já existir substitui todos os dados
+        index=False # Controla se o índice do DataFrame será salvo no banco ou é ignorado
+    )
+
+    logging.info("Dados carregados com sucesso!")
+
+    df_check = pd.read_sql(f"SELECT * FROM {table_name}", con = engine)
+
+    logging.info(f"Total de registros na tabela: {len(df_check)}")
