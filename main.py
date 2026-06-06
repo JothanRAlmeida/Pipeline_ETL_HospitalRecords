@@ -1,4 +1,0 @@
-from extract_data import extract_hospital_data
-from transform_data import transform_data_hospital
-from load_data import load_hospital_data
-
