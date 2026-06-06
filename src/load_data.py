@@ -1,7 +1,7 @@
 import pandas as pd
 import os # Para iteragir diretament com o sistema operacional
 from pathlib import Path
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 import logging
 from dotenv import load_dotenv # Para carregar as variáveis de ambiente do arquivo .env
 from urllib.parse import quote_plus # Codifica strings para que possam ser enviadas com seguranã em uma URL
@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 env_path = Path(__file__).resolve().parent.parent / 'config' / '.env'
 load_dotenv(env_path)
 
-data_base = os.getenv('data_base')
+database = os.getenv('database')
 user = os.getenv('user')
 password = os.getenv('password')
 host = 'localhost'
@@ -21,10 +21,10 @@ host = 'localhost'
 # Conexão com o banco de dados PostgreSQL
 def get_engine():
 
-    logging.info(f"Conectando em {host}:5432/{data_base}")
+    logging.info(f"Conectando em {host}:5432/{database}")
 
     # Define onde está o banco e conecta ao mesmo
-    return create_engine(f"postegresql+psycopg2://{user}:{quote_plus(password)}@{host}:5432/{data_base}")
+    return create_engine(f"postgresql+psycopg2://{user}:{quote_plus(password)}@{host}:5432/{database}")
 
 # Chama a conexão com o banco
 engine = get_engine()
