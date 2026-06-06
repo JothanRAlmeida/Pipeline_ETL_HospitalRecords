@@ -88,7 +88,7 @@ def define_valid_stay(df: pd.DataFrame)->pd.DataFrame:
 
     logging.info("Criando nova coluna para indicar se estadia é válida (DischargeDate >= AdmissionDate)...")
 
-    df['is_valid_stay'] = (df['AdmissionDate'] > df['DischargeDate'])
+    df['is_valid_stay'] = (df['AdmissionDate'] < df['DischargeDate'])
 
     logging.info(f"{len(df[df['is_valid_stay']])} registros com estádia inválida...")
 
