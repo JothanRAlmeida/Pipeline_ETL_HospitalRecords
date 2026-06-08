@@ -4,30 +4,37 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# Caminho onde se encontra os dados brutos
 path_file = Path(__file__).parent.parent/'data'/'raw'/'hospital_patients_real_world.csv'
 
+# Listas/Dicionários com as colunas a serem transformadas e tratadas
 columns_names_to_datetime = ['AdmissionDate', 'DischargeDate']
 columns_names_to_int = ['Age']
 columns_names_to_standard = ['Diagnosis']
 columns_names_fill_nan = {'Gender': 'Unknown','Diagnosis':'Unknown Diagnosis'}
 columns_names_fill_nan_mean = ['Age']
 
+# Cria o DataFrame do pandas
 def create_dataframe(path_name: Path):
     logging.info("Criando Data Frame...")
 
+    # Verifica se o arquivo foi encontrado
     if not path_name.exists():
         raise FileNotFoundError(f"Arquivo não encontrado: {path_name}\n")
 
+    # Ler os dados em csv e converte em DataFrame
     df = pd.read_csv(path_name)
 
     logging.info(f"Data Frame criado com {len(df)} linha(s)...")
 
     return df
 
+# Converte as colunas com datas para datetime
 def exchange_type_datetime(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
     logging.info(f"Convertendo o tipo de dado da(s) coluna(s) {columns_names} para datetime...")
 
+    # Passa por cada coluna especificada e a converte
     for name in columns_names:
         df[name] = pd.to_datetime(df[name], format = "%Y-%m-%d", errors="coerce")
 
@@ -35,10 +42,12 @@ def exchange_type_datetime(df: pd.DataFrame, columns_names: list[str])->pd.DataF
 
     return df
 
+# Converte as colunas para int
 def exchange_type_int(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
     logging.info(f"Convertendo tipo de dado da(s) coluna(s) {columns_names} para int...")
 
+    # Passa por cada coluna especificada e a converte
     for name in columns_names:
         df[name] = pd.to_numeric(df[name], errors="coerce").astype("Int64")
 
@@ -46,6 +55,7 @@ def exchange_type_int(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
     return df
     
+# Padroniza os valores das colunas - primeira letra maiúscula e demais minúsculas
 def standard_categories(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
     logging.info(f"Padronizando categorias da(s) coluna(s) {columns_names}...")
@@ -61,6 +71,7 @@ def standard_categories(df: pd.DataFrame, columns_names: list[str])->pd.DataFram
 
     return df
 
+# Preenche valores nan com base no dicionário
 def fill_nan_columns(df: pd.DataFrame, columns_names: dict)->pd.DataFrame:
 
     logging.info(f"Preenchendo nan das colunas {columns_names.keys()}...")
@@ -72,10 +83,12 @@ def fill_nan_columns(df: pd.DataFrame, columns_names: dict)->pd.DataFrame:
 
     return df
 
+# Preenche valores nan com mediana
 def fill_nan_median(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
     logging.info(f"Preenchendo valores nan da(s) coluna(s) {columns_names} com a média...")
 
+    # Passa por cada coluna, busca a mediana e preenche os valores vazios
     for name in columns_names:
         median = df[name].median()
         df[name] = df[name].fillna(median)
@@ -84,16 +97,19 @@ def fill_nan_median(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
     return df
 
+# Cria coluna extra especificando se o período de internação (entrada-saída) é válido
 def define_valid_stay(df: pd.DataFrame)->pd.DataFrame:
 
     logging.info("Criando nova coluna para indicar se estadia é válida (DischargeDate >= AdmissionDate)...")
 
+    # Cria a nova coluna booleana que informa período válido ou não
     df['is_valid_stay'] = (df['AdmissionDate'] < df['DischargeDate'])
 
     logging.info(f"{len(df[df['is_valid_stay']])} registros com estádia inválida...")
 
     return df
 
+# Chama todas as funções de transformação
 def transform_data_hospital():
 
 
