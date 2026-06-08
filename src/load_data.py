@@ -13,6 +13,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 env_path = Path(__file__).resolve().parent.parent / 'config' / '.env'
 load_dotenv(env_path)
 
+# Vincula dados da pasta .env 
 database = os.getenv('database')
 user = os.getenv('user')
 password = os.getenv('password')
@@ -44,6 +45,7 @@ def load_hospital_data(table_name: str, df: pd.DataFrame):
 
     logging.info("Dados carregados com sucesso!")
 
+    # Para checar se os dados foram carregados no banco
     df_check = pd.read_sql(f"SELECT * FROM {table_name}", con = engine)
 
     logging.info(f"Total de registros na tabela: {len(df_check)}")
