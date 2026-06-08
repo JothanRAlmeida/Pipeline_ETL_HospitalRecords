@@ -5,7 +5,13 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Caminho onde se encontra os dados brutos
-path_file = Path(__file__).parent.parent/'data'/'raw'/'hospital_patients_real_world.csv'
+input_path = Path(__file__).parent.parent/'data'/'raw'/'hospital_patients_real_world.csv'
+
+# Caminho onde os dados processados serão salvos
+output_path = Path('data/processed')
+output_path.mkdir(parents=True, exist_ok=True)
+
+file_path = output_path / "hospital_records_transformed.csv"
 
 # Listas/Dicionários com as colunas a serem transformadas e tratadas
 columns_names_to_datetime = ['AdmissionDate', 'DischargeDate']
@@ -105,9 +111,18 @@ def define_valid_stay(df: pd.DataFrame)->pd.DataFrame:
     # Cria a nova coluna booleana que informa período válido ou não
     df['is_valid_stay'] = (df['AdmissionDate'] < df['DischargeDate'])
 
-    logging.info(f"{len(df[df['is_valid_stay']])} registros com estádia inválida...")
+    logging.info(f"{len(df[~df['is_valid_stay']])} registros com estádia inválida...")
 
     return df
+
+# Salva os dados tratados 
+def save_processed_data(df: pd.DataFrame, output_path)->None:
+
+    logging.info(f"Salvando os dados transformados...")
+
+    df.to_csv(output_path, index=False)
+
+    logging.info(f"Dados salvos em {output_path}...")
 
 # Chama todas as funções de transformação
 def transform_data_hospital():
@@ -115,13 +130,14 @@ def transform_data_hospital():
 
     print("Iniciando transformações...\n")
 
-    df = create_dataframe(path_file)
+    df = create_dataframe(input_path)
     df = exchange_type_datetime(df, columns_names_to_datetime)
     df = exchange_type_int(df, columns_names_to_int)
     df = standard_categories(df, columns_names_to_standard)
     df = fill_nan_columns(df, columns_names_fill_nan)
     df = fill_nan_median(df, columns_names_fill_nan_mean)
     df = define_valid_stay(df)
+    save_processed_data(df, file_path)
 
     logging.info("Transformações concluídas com sucesso!")
 
