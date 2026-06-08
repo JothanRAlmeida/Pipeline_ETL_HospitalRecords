@@ -142,6 +142,6 @@ def transform_data_hospital():
     df = define_valid_stay(df)
     save_processed_data(df, file_path)
 
-    logging.info("Transformações concluídas com sucesso!")
+    logging.info("Transformações concluídas com sucesso...")
 
     return df
