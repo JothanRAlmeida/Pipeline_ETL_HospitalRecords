@@ -14,6 +14,6 @@ extract_hospital_data()
 df = transform_data_hospital()
 
 # Carga
-#load_hospital_data(table_name, df)
+load_hospital_data(table_name, df)
 
 print("Pipeline executado com sucesso!\n\n")
