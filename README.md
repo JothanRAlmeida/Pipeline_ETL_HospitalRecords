@@ -1,3 +1,131 @@
+ # Pipeline ETL - Registros hospitalares
+
+> Pipeline ETL automatizado para coleta, transformação e armazenamento de dados de pacientes de um hospital fictício.
+
+---
+ 
+## 🎯 Sobre o Projeto
+
+Este projeto foi desenvolvido com o objetivo de construir um **pipeline ETL completo** utilizando as melhores práticas de Engenharia de Dados
+
+O pipeline coleta dados de registros hospitalares, transforma os dados para um formato estruturado e os armazena em um banco de dados PostgreSQL para análises futuras.
+
+---
+
+## 🏗️ Arquitetura do Pipeline
+
+<img src='architecture-pipeline.png' alt='Arquitetura do Pipeline ETL'>
+
+---
+
+## 🛠️ Stack Tecnológica
+
+### Core
+- **Python 3.14+** - Linguagem principal
+- **PostgreSQL 16** - Banco de dados relacional
+
+### Bibliotecas Python
+- **pandas** - Manipulação e transformação de dados
+- **requests** - Requisições HTTP para a API
+- **SQLAlchemy** - ORM para interação com o banco de dados
+- **psycopg2** - Driver PostgreSQL
+- **python-dotenv** - Gerenciamento de variáveis de ambiente
+
+### Outras Ferramentas
+- **Jupyter Notebook** - Análise exploratória de dados
+- **UV** - Gerenciador de pacotes Python rápido
+
+---
+
+## 🚀 Instalação e Configuração
+
+### 1️⃣ Clone o Repositório
+
+```bash
+git clone https://github.com/JothanRAlmeida/Pipeline_ETL_HospitalRecords.git
+cd Pipeline_ETL_HospitalRecords
+```
+
+### 2️⃣ Obtenha sua API Key do Kaggle
+
+1. Acesse [Kaggle](https://www.kaggle.com/settings/api)
+2. Crie uma conta gratuita
+3. Gere sua API Key
+4. Copie e cole para criar a pasta oculta **~/.kaggle/access_token**
+
+### 3️⃣ Configure as Variáveis de Ambiente
+
+Crie um arquivo `.env` dentro da pasta `config/`:
+
+```bash
+# config/.env
+
+# PostgreSQL
+user=exemplo
+password=exemplo
+database=exemplo
+```
+
+## 🔍 Detalhamento das Etapas
+
+### 📥 **ETAPA 1: EXTRACT**
+
+**Arquivo:** [`src/extract_data.py`](src/extract_data.py)
+
+**O que faz:**
+1. Cria uma instância da classe KaggleApi
+2. Carrega as credenciais e autentica o usuário
+3. Faz o dowload dos arquivos do Kaggle
+4. Salva os dados brutos em formato CSV em `data/raw/hospital_patients_real_world.csv`
+
+**Dados coletados:**
+- Idade
+- Gênero
+- Diagnóstico
+- Data de entrada
+- Data de saída
+- Hospital
+
+---
+
+### 🔄 **ETAPA 2: TRANSFORM**
+
+**Arquivo:** [`src/transform_data.py`](src/transform_data.py)
+
+**O que faz:**
+
+#### 2.1 **Criação do DataFrame**
+- Lê o arquivo CSV
+- Converte para DataFrame Pandas
+
+#### 2.2 **Conversão das colunas de data**
+- As colunas 'AdmissionDate' e 'DischargeDate' são convertidas para datetime
+- Formato "%Y-%m-%d"
+
+#### 2.3 **Conversão da coluna de inteiro**
+- Converte a coluna de idade para int
+
+#### 2.4 **Padronização de valores**
+Padronização dos diagnosticos:
+- Remoção de espaços no inicio e fim
+- Tudo em letra minúscula
+- Primeira letra maiúscula
+
+#### 2.5 **Preenchimento de valores ausentes**
+Preenchimento das coluna 'Gender' e 'Diagnosis' e 'Age':
+- Gender: nan para Unknown - Categoria já existia
+- Diagnosis: nan para Unknown Diagnosis - Nova categoria
+- Age: nan preenchido com a mediana (média e mediana muito próximos)
+
+#### 2.6 **Definição de estadia inválida**
+- Coluna 'DischargeDate' com data anterior a data da coluna 'AdmissionDate'
+- Criação de nova coluna booleana 'is_valid_stay'
+- False = Estadia inválida
+
+**Resultado:** DataFrame limpo, estruturado e pronto para análise
+
+---
+
  - Conecção com API da Kaggle
  - Extração dos dados dos paciênctes do hospial em CSV
  - Análise exploratória para identificação de inconsistência:
