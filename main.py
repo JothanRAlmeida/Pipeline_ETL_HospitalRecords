@@ -10,7 +10,7 @@ table_name = 'hospital_records'
 # Extração
 extract_hospital_data()
 
-# Transformação
+# Transformação e Salvamento dos dados
 df = transform_data_hospital()
 
 # Carga
