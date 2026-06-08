@@ -130,8 +130,7 @@ def save_processed_data(df: pd.DataFrame, output_path)->None:
 # Chama todas as funções de transformação
 def transform_data_hospital():
 
-
-    print("Iniciando transformações...\n")
+    logging.info("Iniciando as transformações...")
 
     df = create_dataframe(input_path)
     df = exchange_type_datetime(df, columns_names_to_datetime)
