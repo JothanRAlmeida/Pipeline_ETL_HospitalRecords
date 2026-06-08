@@ -33,7 +33,7 @@ engine = get_engine()
 # Carrega os dados tratados no banco de dados no PostgreSQL
 def load_hospital_data(table_name: str, df: pd.DataFrame):
 
-    logging.info(f"Carregando dados à tabela {table_name}")
+    logging.info(f"Carregando dados na tabela {table_name} do banco de dados...")
 
     # Para salvar o DataFrame do pandas diretamente no banco de dados
     df.to_sql(
@@ -43,9 +43,9 @@ def load_hospital_data(table_name: str, df: pd.DataFrame):
         index=False # Controla se o índice do DataFrame será salvo no banco ou é ignorado
     )
 
-    logging.info("Dados carregados com sucesso!")
+    logging.info("Dados carregados com sucesso...")
 
     # Para checar se os dados foram carregados no banco
     df_check = pd.read_sql(f"SELECT * FROM {table_name}", con = engine)
 
-    logging.info(f"Total de registros na tabela: {len(df_check)}")
+    logging.info(f"Total de registros na tabela {table_name}: {len(df_check)}")
