@@ -22,7 +22,7 @@ host = 'localhost'
 # Conexão com o banco de dados PostgreSQL
 def get_engine():
 
-    logging.info(f"Conectando em {host}:5432/{database}")
+    logging.info(f"Conectando em {host}:5432/{database}...")
 
     # Define onde está o banco e conecta ao mesmo
     return create_engine(f"postgresql+psycopg2://{user}:{quote_plus(password)}@{host}:5432/{database}")
