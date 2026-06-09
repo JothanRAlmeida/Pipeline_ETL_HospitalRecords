@@ -64,7 +64,7 @@ def exchange_type_int(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 # Padroniza os valores das colunas - primeira letra maiúscula e demais minúsculas
 def standard_categories(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
-    logging.info(f"Padronizando categorias da(s) coluna(s) {columns_names}...")
+    logging.info(f"Padronizando categoria(s) da(s) coluna(s) {columns_names}...")
 
     for name in columns_names:
         df[name] = (df[name]
@@ -73,7 +73,7 @@ def standard_categories(df: pd.DataFrame, columns_names: list[str])->pd.DataFram
                     .str.capitalize() # Primeira letra em maiúsculo
                     )
 
-    logging.info(f"Categorias da(s) coluna(s) {columns_names} padronizada(s)...")
+    logging.info(f"Categoria(s) da(s) coluna(s) {columns_names} padronizada(s)...")
 
     return df
 
@@ -85,14 +85,14 @@ def fill_nan_columns(df: pd.DataFrame, columns_names: dict)->pd.DataFrame:
     # Utiliza o dicionário com coluna:valor para preencher os valores ausentes
     df = df.fillna(columns_names)
 
-    logging.info(f"Valores nan das {list(columns_names.keys())} preenchidos com {list(columns_names.values())} respectivamente...")
+    logging.info(f"Valores nan das colunas {list(columns_names.keys())} preenchidos com {list(columns_names.values())} respectivamente...")
 
     return df
 
 # Preenche valores nan com mediana
 def fill_nan_median(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
-    logging.info(f"Preenchendo valores nan da(s) coluna(s) {columns_names} com a média...")
+    logging.info(f"Preenchendo valores nan da(s) coluna(s) {columns_names} com a mediana...")
 
     # Passa por cada coluna, busca a mediana e preenche os valores vazios
     for name in columns_names:
