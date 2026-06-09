@@ -51,7 +51,7 @@ cd Pipeline_ETL_HospitalRecords
 1. Acesse [Kaggle](https://www.kaggle.com/settings/api)
 2. Crie uma conta gratuita
 3. Gere sua API Key
-4. Copie e cole para criar a pasta oculta **~/.kaggle/access_token**
+4. Copie e cole o código para criar a pasta oculta **~/.kaggle/access_token**
 
 ### 3️⃣ Configure as Variáveis de Ambiente
 
@@ -75,7 +75,7 @@ database=exemplo
 **O que faz:**
 1. Cria uma instância da classe KaggleApi
 2. Carrega as credenciais e autentica o usuário
-3. Faz o dowload dos arquivos do Kaggle
+3. Faz o dowload do arquivo do reposistório do Kaggle
 4. Salva os dados brutos em formato CSV em `data/raw/hospital_patients_real_world.csv`
 
 **Dados coletados:**
@@ -99,43 +99,92 @@ database=exemplo
 - Converte para DataFrame Pandas
 
 #### 2.2 **Conversão das colunas de data**
-- As colunas 'AdmissionDate' e 'DischargeDate' são convertidas para datetime
+- Converte as colunas 'AdmissionDate' e 'DischargeDate' para datetime
 - Formato "%Y-%m-%d"
 
 #### 2.3 **Conversão da coluna de inteiro**
 - Converte a coluna de idade para int
 
 #### 2.4 **Padronização de valores**
-Padronização dos diagnosticos:
-- Remoção de espaços no inicio e fim
-- Tudo em letra minúscula
-- Primeira letra maiúscula
+Padroniza os diagnosticos:
+- Remove os espaços em branco do inicio e fim
+- Converte tudo em letra minúscula
+- Converte a primeira letra para maiúscula
 
 #### 2.5 **Preenchimento de valores ausentes**
-Preenchimento das coluna 'Gender' e 'Diagnosis' e 'Age':
-- Gender: nan para Unknown - Categoria já existia
-- Diagnosis: nan para Unknown Diagnosis - Nova categoria
-- Age: nan preenchido com a mediana (média e mediana muito próximos)
+Preenche as coluna 'Gender', 'Diagnosis' e 'Age':
+- Gender: 'nan' para 'Unknown' - Categoria já existia
+- Diagnosis: 'nan' para 'Unknown Diagnosis' - Nova categoria
+- Age: 'nan' preenchido com a mediana (média e mediana muito próximos)
 
 #### 2.6 **Definição de estadia inválida**
 - Coluna 'DischargeDate' com data anterior a data da coluna 'AdmissionDate'
-- Criação de nova coluna booleana 'is_valid_stay'
+- Cria nova coluna booleana 'is_valid_stay'
 - False = Estadia inválida
 
 **Resultado:** DataFrame limpo, estruturado e pronto para análise
 
 ---
 
- - Conecção com API da Kaggle
- - Extração dos dados dos paciênctes do hospial em CSV
- - Análise exploratória para identificação de inconsistência:
-    - Colunas Age, Gender e Diagnosis com valores nan
-    - Os valores nan correpondem a 3% do total de dados
-    - Identificação de categorias da coluna Diagnosis iguais mas com letras em caixa alta
-    - Coluna Age como float ao invés de inte
-    - Datas de saída antes da data de entrada no hospital (3%)
-- Criação do DataFrame
-- Tratamento das colunas de datas para DateTime
-- Conversão da coluna Age para int
-- Preenchimento de valores nan - Gender = Unknown (categoria que já existia) - Diagnosis = Unknown Diagnosis (poucos dados ausentes) - Age = mediana (não possuia valores outliers significantes mas a média e a mediana eram bem próximos)
-- Criação de nova coluna para indicar se estadia é válida ou não (DischargeDate >= AdmissionDate) para possível tratamento em futura análise
+### 💾 **ETAPA 3: LOAD**
+
+**Arquivo:** [`src/load_data.py`](src/load_data.py)
+
+**O que faz:**
+
+#### 3.1 **Conexão com o banco de dados**
+```python
+engine = create_engine(
+    f"postgresql+psycopg2://{user}:{quote_plus(password)}@{host}:5432/{database}"
+)
+```
+
+#### 3.2 **Inserção dos dados**
+```python
+df.to_sql(
+    name='hospital_records',
+    con=engine,
+    if_exists='replace',  # reescreve todos os dados
+    index=False
+)
+```
+
+#### 3.3 **Validação**
+- Faz um `SELECT` para verificar total de registros
+- Loga o resultado para auditoria
+---
+
+## 🔎 Análise Exploratória dos dados
+Para identificação de inconsistência e embasamento para tomada de decisão:
+
+#### Valores Nulos
+- Colunas Age, Gender e Diagnosis possuem valores nulos, cerca de 3% do total de dados:
+    - Valores nulos da coluna Age foram preenchidos com a mediana. Apesar de não ter outliers relevantes, optou-se por não usar a média que seria um valor próximo da mediana.
+    - Valores nulos da coluna Gender foram preenchidos com 'Unknown', uma categoria que já existia no conjunto de dados.
+    - Valores nulos da coluna Diagnosis foram preenchidos com 'Unknown Diagnosis', uma nova categoria.
+
+#### Valores iguais com escritas distintas
+- Coluna Diagnosis possue valores iguais mas alguns escritos em caixa alta, contando como distinto:
+     - Removidos os espaços em branco no início e fim dos valores;
+     - Padronização de todos os valores com a primeira letra maiúscula e as demais em letra minúscula.
+
+#### Tipo de Dado Incorreto
+- Coluna Age se encontra como float:
+    - A coluna foi convertida para inteiro.
+
+#### Períodos Inválidos
+- Datas de saída antes da data de entrada no hospital, cerca de 3% dos casos:
+    - Foi criada uma nova coluna que determina se este período é válido ou não.
+    - A nova coluna pode ser usava como filtro para análises futuras, não utilizando períodos inválidos.
+
+## 🧪 Testes Locais 
+
+Para testar o pipeline:
+
+```bash
+# Instale as dependências
+uv pip install -e .
+
+# Execute o script
+uv run main.py
+```
