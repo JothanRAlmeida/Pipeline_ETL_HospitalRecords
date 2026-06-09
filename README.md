@@ -176,6 +176,7 @@ Para identificação de inconsistência e embasamento para tomada de decisão:
 - Datas de saída antes da data de entrada no hospital, cerca de 3% dos casos:
     - Foi criada uma nova coluna que determina se este período é válido ou não.
     - A nova coluna pode ser usava como filtro para análises futuras, não utilizando períodos inválidos.
+---
 
 ## 🧪 Testes Locais 
 
