@@ -22,7 +22,7 @@ columns_names_fill_nan_mean = ['Age']
 
 # Cria o DataFrame do pandas
 def create_dataframe(path_name: Path):
-    logging.info("Criando Data Frame...")
+    logging.info("Criando DataFrame...")
 
     # Verifica se o arquivo foi encontrado
     if not path_name.exists():
@@ -31,7 +31,7 @@ def create_dataframe(path_name: Path):
     # Ler os dados em csv e converte em DataFrame
     df = pd.read_csv(path_name)
 
-    logging.info(f"Data Frame criado com {len(df)} linha(s)...")
+    logging.info(f"DataFrame criado com {len(df)} linha(s)...")
 
     return df
 
@@ -44,20 +44,20 @@ def exchange_type_datetime(df: pd.DataFrame, columns_names: list[str])->pd.DataF
     for name in columns_names:
         df[name] = pd.to_datetime(df[name], format = "%Y-%m-%d", errors="coerce")
 
-    logging.info("Colunas convertidas para datetime...")
+    logging.info("Coluna(s) convertida(s) para datetime...")
 
     return df
 
 # Converte as colunas para int
 def exchange_type_int(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
-    logging.info(f"Convertendo tipo de dado da(s) coluna(s) {columns_names} para int...")
+    logging.info(f"Convertendo tipo de dado da(s) coluna(s) {columns_names} para inteiro...")
 
     # Passa por cada coluna especificada e a converte
     for name in columns_names:
         df[name] = pd.to_numeric(df[name], errors="coerce").astype("Int64")
 
-    logging.info("Coluna(s) convertida(s) para int...")
+    logging.info("Coluna(s) convertida(s) para inteiro...")
 
     return df
     
@@ -80,12 +80,12 @@ def standard_categories(df: pd.DataFrame, columns_names: list[str])->pd.DataFram
 # Preenche valores nan com base no dicionário
 def fill_nan_columns(df: pd.DataFrame, columns_names: dict)->pd.DataFrame:
 
-    logging.info(f"Preenchendo nan das colunas {columns_names.keys()}...")
+    logging.info(f"Preenchendo nan da(s) coluna(s) {columns_names.keys()}...")
 
     # Utiliza o dicionário com coluna:valor para preencher os valores ausentes
     df = df.fillna(columns_names)
 
-    logging.info(f"Valores nan das colunas {list(columns_names.keys())} preenchidos com {list(columns_names.values())} respectivamente...")
+    logging.info(f"Valores nan da(s) coluna(s) {list(columns_names.keys())} preenchido(s) com {list(columns_names.values())} respectivamente...")
 
     return df
 
@@ -102,7 +102,7 @@ def fill_nan_median(df: pd.DataFrame, columns_names: list[str])->pd.DataFrame:
 
         df[name] = df[name].fillna(median)
 
-    logging.info(f"Valores nan da(s) coluna(s) {columns_names} preenchidas...")
+    logging.info(f"Valores nan da(s) coluna(s) {columns_names} preenchida(s)...")
 
     return df
 
@@ -114,7 +114,7 @@ def define_valid_stay(df: pd.DataFrame)->pd.DataFrame:
     # Cria a nova coluna booleana que informa período válido ou não
     df['is_valid_stay'] = (df['AdmissionDate'] < df['DischargeDate'])
 
-    logging.info(f"{len(df[~df['is_valid_stay']])} registros com estádia inválida...")
+    logging.info(f"{len(df[~df['is_valid_stay']])} registro(s) com estádia inválida encontrado(s)...")
 
     return df
 
